@@ -86,8 +86,19 @@ export default function HomeScreen() {
   }, [lastCompleted]);
 
   const checkIfTodayCompleted = (): void => {
-    const today = new Date().toISOString().split('T')[0];
-    setIsTodayCompleted(lastCompleted === today);
+    if (!lastCompleted) {
+      setIsTodayCompleted(false);
+      return;
+    }
+
+    const lastCompletedDate = new Date(lastCompleted);
+    const now = new Date();
+
+    // Converte ambas as datas para YYYY-MM-DD para comparar apenas o dia
+    const lastCompletedDay = lastCompletedDate.toISOString().split('T')[0];
+    const currentDay = now.toISOString().split('T')[0];
+
+    setIsTodayCompleted(lastCompletedDay === currentDay);
   };
 
   const confirmReset = () => {
